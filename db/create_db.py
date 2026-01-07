@@ -13,7 +13,8 @@ CREATE TABLE IF NOT EXISTS Student (
     student_id INTEGER PRIMARY KEY AUTOINCREMENT,
     roll_no TEXT UNIQUE NOT NULL,
     name TEXT NOT NULL,
-    department TEXT
+    department TEXT,
+    semester TEXT
 )
 ''')
 print("Student table created.")
@@ -22,26 +23,47 @@ print("Student table created.")
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS Subject (
     subject_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    subject_name TEXT NOT NULL,
-    total_classes INTEGER NOT NULL
+    subject_name TEXT NOT NULL
 )
 ''')
+
 print("Subject table created.")
 
+
 # Step 6: Create Attendance table
+# Attendance table
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS Attendance (
     attendance_id INTEGER PRIMARY KEY AUTOINCREMENT,
     student_id INTEGER NOT NULL,
     subject_id INTEGER NOT NULL,
     date TEXT NOT NULL,
+    scan_no INTEGER NOT NULL CHECK (scan_no BETWEEN 1 AND 4),
     status INTEGER NOT NULL CHECK (status IN (0, 1)),
     FOREIGN KEY (student_id) REFERENCES Student(student_id),
     FOREIGN KEY (subject_id) REFERENCES Subject(subject_id),
-    UNIQUE(student_id, subject_id, date)
+    UNIQUE(student_id, subject_id, date, scan_no)
 )
 ''')
+
 print("Attendance table created.")
+
+# Class Schedule table
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS ClassSchedule (
+    schedule_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    subject_id INTEGER,
+    day TEXT NOT NULL,
+    start_time TEXT NOT NULL,
+    end_time TEXT NOT NULL,
+    is_free_period INTEGER NOT NULL CHECK (is_free_period IN (0,1)),
+    FOREIGN KEY (subject_id) REFERENCES Subject(subject_id)
+)
+''')
+
+print("ClassSchedule table created.")
+
+
 
 # Commit and close
 conn.commit()

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AttendX | Class Schedule</title>
+</head>
+<body>
+
+<h2>Class Schedule Upload</h2>
+
+<form method="POST">
+    <label>Subject Name:</label><br>
+    <input type="text" name="subject" required><br><br>
+
+    <label>Day:</label><br>
+    <select name="day">
+        <option>Monday</option>
+        <option>Tuesday</option>
+        <option>Wednesday</option>
+        <option>Thursday</option>
+        <option>Friday</option>
+    </select><br><br>
+
+    <label>Start Time:</label><br>
+    <input type="time" name="start" required><br><br>
+
+    <label>End Time:</label><br>
+    <input type="time" name="end" required><br><br>
+
+    <label>
+        <input type="checkbox" name="free"> Free Period
+    </label><br><br>
+
+    <button type="submit">Save Schedule</button>
+</form>
+
+{% if msg %}
+<p style="color:green">{{ msg }}</p>
+{% endif %}
+
+<br>
+<a href="/dashboard">Back to Dashboard</a>
+
+</body>
+</html>
