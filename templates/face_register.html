@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AttendX | Face Registration</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<header>AttendX – Face Registration</header>
+
+<div class="container">
+    <div class="card">
+        <h3>Select Student for Face Registration</h3>
+
+        <form method="POST">
+            <select name="roll" required>
+                {% for s in students %}
+                <option value="{{ s.roll_no }}">
+                    {{ s.roll_no }} - {{ s.name }}
+                </option>
+                {% endfor %}
+            </select>
+
+            <br><br>
+            <button type="submit">📸 Start Face Capture</button>
+        </form>
+
+        {% if msg %}
+        <p style="color:green">{{ msg }}</p>
+        {% endif %}
+
+        <br>
+        <a href="/dashboard">Back to Dashboard</a>
+    </div>
+</div>
+
+</body>
+</html>

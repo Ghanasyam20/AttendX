@@ -1,47 +1,42 @@
 import cv2
 import os
+import sys
 
-name = input("Enter Student Name: ")
-roll = input("Enter Roll Number: ")
+# Get roll number from command line
+roll_no = sys.argv[1]
 
-folder_path = f"data/students/{roll}_{name}"
+save_path = f"data/students/{roll_no}"
+os.makedirs(save_path, exist_ok=True)
 
-if not os.path.exists(folder_path):
-    os.makedirs(folder_path)
-
-face_cascade = cv2.CascadeClassifier(
+cam = cv2.VideoCapture(0)
+face_detector = cv2.CascadeClassifier(
     cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
 )
 
-cap = cv2.VideoCapture(1)  # change if needed
 count = 0
 
-print("Press 's' to save face, 'q' to quit")
+print("Starting face capture... Press Q to quit")
 
 while True:
-    ret, frame = cap.read()
+    ret, img = cam.read()
     if not ret:
         break
 
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    faces = face_cascade.detectMultiScale(gray, 1.3, 5)
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    faces = face_detector.detectMultiScale(gray, 1.3, 5)
 
     for (x, y, w, h) in faces:
-        face = frame[y:y+h, x:x+w]
         count += 1
-        file_name = f"{folder_path}/face_{count}.jpg"
-        cv2.imwrite(file_name, face)
-        cv2.rectangle(frame, (x,y), (x+w,y+h), (0,255,0), 2)
+        face_img = gray[y:y+h, x:x+w]
+        cv2.imwrite(f"{save_path}/{count}.jpg", face_img)
+        cv2.rectangle(img, (x,y), (x+w,y+h), (255,0,0), 2)
 
-    cv2.imshow("Student Registration", frame)
+    cv2.imshow("Face Registration", img)
 
-    key = cv2.waitKey(1)
-    if key & 0xFF == ord('s'):
-        print("Face captured")
-    elif key & 0xFF == ord('q'):
+    if cv2.waitKey(1) & 0xFF == ord('q') or count >= 20:
         break
 
-cap.release()
+cam.release()
 cv2.destroyAllWindows()
 
-print("Registration completed")
+print("Face registration completed")

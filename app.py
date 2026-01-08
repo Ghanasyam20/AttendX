@@ -205,6 +205,32 @@ def export_excel():
 
     return send_file(file_name, as_attachment=True)
 
+import subprocess
+
+@app.route("/face-register", methods=["GET", "POST"])
+def face_register():
+    if "admin" not in session:
+        return redirect(url_for("login"))
+
+    conn = get_db_connection()
+    students = conn.execute("SELECT roll_no, name FROM Student").fetchall()
+    conn.close()
+
+    if request.method == "POST":
+        roll = request.form["roll"]
+
+        # Run face capture script
+        subprocess.run(
+            ["python", "ai/register_student.py", roll]
+        )
+
+        return render_template(
+            "face_register.html",
+            students=students,
+            msg="Face registration completed successfully"
+        )
+
+    return render_template("face_register.html", students=students)
 
 if __name__ == "__main__":
     app.run(debug=True)
