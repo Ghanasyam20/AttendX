@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AttendX | Admin Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.svg') }}">
+</head>
+<body class="auth-shell">
+
+<div class="auth-card">
+    <div class="auth-brand">
+        <div class="auth-badge">&#10003;</div>
+        <div class="auth-name">Attend<span>X</span></div>
+    </div>
+    <h2>Admin Login</h2>
+    <p class="auth-sub">Smart Attendance Management System</p>
+
+    <form method="POST" class="auth-form">
+        <div class="form-field">
+            <label for="username">Username</label>
+            <input id="username" type="text" name="username" placeholder="Enter your username" required>
+        </div>
+        <div class="form-field">
+            <label for="password">Password</label>
+            <input id="password" type="password" name="password" placeholder="Enter your password" required>
+        </div>
+
+        {% if error %}
+        <div class="form-error">{{ error }}</div>
+        {% endif %}
+
+        <button type="submit" class="pill-btn auth-submit">Sign In</button>
+    </form>
+
+    <div class="auth-footer">
+        &copy; AttendX &mdash; Power-Efficient Smart Attendance
+        <span>All Rights Reserved @vjr_associates</span>
+    </div>
+</div>
+
+</body>
+</html>

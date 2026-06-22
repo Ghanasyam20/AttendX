@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AttendX | Warning Display</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <meta http-equiv="refresh" content="10">
+</head>
+<body class="dashboard-shell display-mode">
+
+<div class="shell">
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <img src="{{ url_for('static', filename='images/attendx-logo.svg') }}" alt="AttendX">
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-title">Menu</div>
+            <a class="nav-item" href="/dashboard">
+                <span class="nav-icon"></span>
+                Dashboard
+            </a>
+            <a class="nav-item active" href="/warnings">
+                <span class="nav-icon"></span>
+                Attendance Warnings
+            </a>
+        </div>
+    </aside>
+
+    <main class="content">
+        <div class="page-title">
+            <h1>Attendance Warning</h1>
+            <p>Students currently below attendance threshold.</p>
+        </div>
+
+        <div class="card display-card">
+            <div class="display-label">Students</div>
+            <div class="display-list">
+                {% if students %}
+                    {% for s in students %}
+                    <div class="display-message">{{ s.name }}</div>
+                    {% endfor %}
+                {% else %}
+                    <div class="display-message">No warnings right now</div>
+                {% endif %}
+            </div>
+        </div>
+    </main>
+</div>
+
+</body>
+</html>
